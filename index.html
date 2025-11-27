@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Mapas Sociales | Plataforma de Impacto Social</title>
+    
+    <link rel="stylesheet" href="styles.css"> 
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        crossorigin=""></script>
+        
+</head>
+<body>
+
+    <div id="sidebar">
+        <span class="close-sidebar">&times;</span>
+        <div class="sidebar-content">
+            <h3>Navegación</h3>
+            <a href="#map-section">Mapa de Incidentes</a>
+            <a href="#comunidad-section">Foro de Denuncias</a>
+            <a href="#contacto-section">Contacta con Nosotros</a>
+            <a href="#about-section">Acerca del Proyecto</a>
+            <a href="#" id="open-report-modal-sidebar" class="btn btn-primary btn-full">Reporte Rápido Ahora</a>
+        </div>
+    </div>
+
+    <header class="hero">
+        <div class="container">
+            <button id="open-sidebar" class="menu-btn">☰</button>
+            <h1 class="hero-title">Mapas Sociales: Tu Impacto en el Territorio.</h1>
+            <p class="hero-subtitle">
+                La herramienta definitiva para reportar y visualizar incidentes sociales y ambientales en tiempo real.
+            </p>
+            <a href="#" id="open-report-modal" class="btn btn-primary">¡Reporte Rápido Ahora!</a>
+            <a href="#map-section" class="btn btn-secondary">Ver el Mapa de Impacto</a>
+        </div>
+    </header>
+
+    <section class="metrics">
+        <div class="container">
+            <h2>El Impacto de Nuestra Comunidad</h2>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <span class="metric-number">1,250+</span>
+                    <p class="metric-label">Reportes Activos</p>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-number">98%</span>
+                    <p class="metric-label">Tasa de Geolocalización</p>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-number">4.7/5</span>
+                    <p class="metric-label">Satisfacción de Usuarios</p>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-number">24/7</span>
+                    <p class="metric-label">Monitoreo Constante</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="map-section" class="map-section">
+        <div class="container">
+            <h2>Mapa de Incidentes Activos</h2>
+            <p class="map-subtitle">Explora los incidentes (Contaminación, Desapariciones y Denuncias) registrados por la comunidad.</p>
+            <div id="map-container"></div>
+        </div>
+    </section>
+
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Reporte Instantáneo</h3>
+            <p>Tu reporte es vital. Proporciona detalles y clasifica el incidente. Puedes hacerlo de forma **anónima**.</p>
+            
+            <form id="report-form">
+                <input type="text" id="report-title" placeholder="Título Breve del Incidente (Ej: Contaminación grave)" required>
+                
+                <textarea id="report-description" placeholder="Describe los detalles del incidente (Lugar, hora aproximada, personas involucradas si aplica)..." required></textarea>
+                
+                <label for="report-type">Clasificación del Reporte:</label>
+                <select id="report-type" required>
+                    <option value="" disabled selected>Selecciona un tipo de incidente</option>
+                    <option value="Ambiente">Contaminación/Riesgo Ambiental</option>
+                    <option value="Desaparecido">Persona Desaparecida</option>
+                    <option value="DenunciaExterna">Denuncia Ciudadana (Otro tipo)</option>
+                </select>
+                
+                <label>Define la Ubicación del Incidente:</label>
+                <div id="location-choice-buttons">
+                    <button type="button" class="btn-location active" data-mode="gps">Usar mi Ubicación Actual</button>
+                    <button type="button" class="btn-location" data-mode="manual">Ingresar Coordenadas</button>
+                </div>
+
+                <div id="manual-coords-container" style="display: none;">
+                    <input type="number" step="any" id="report-lat" placeholder="Latitud (Ej: 19.43)" required disabled>
+                    <input type="number" step="any" id="report-lng" placeholder="Longitud (Ej: -99.13)" required disabled>
+                </div>
+
+                <p id="location-status" class="status-gps">Ubicación: Usando GPS (Esperando permiso...)</p>
+
+                <label for="report-photo" class="file-label">
+                    <input type="file" id="report-photo" accept="image/*">
+                    <span id="photo-name">Adjuntar Foto (Opcional)</span>
+                </label>
+                
+                <div class="checkbox-container">
+                    <input type="checkbox" id="report-anonimo">
+                    <label for="report-anonimo">Reportar de forma Anónima</label>
+                </div>
+                
+                <input type="submit" value="Enviar Reporte Clasificado" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+
+    <section id="contacto-section" class="info-section bg-white">
+        <div class="container">
+            <h2>Contacta con Nuestro Equipo</h2>
+            <p>Si tienes información adicional, propuestas de colaboración o necesitas apoyo, no dudes en comunicarte con nosotros.</p>
+            <p><strong>Email:</strong> contacto@mapassociales.org</p>
+            <p><strong>Teléfono:</strong> +52 55 1234 5678</p>
+            <p>Trabajamos 24/7 para canalizar la información de forma efectiva.</p>
+        </div>
+    </section>
+
+    <section id="comunidad-section" class="info-section bg-light">
+        <div class="container">
+            <h2>Foro y Comunidad de Denuncias</h2>
+            <p>Aquí se listan todos los reportes recientes. Únete a la discusión para compartir información verificada.</p>
+            <div id="denuncias-list">
+                <div class="denuncia-item">
+                    <h4>Contaminación grave en el río (26 Nov)</h4>
+                    <p>Necesitamos más fotos de la zona para confirmar el origen.</p>
+                    <span class="denuncia-meta">Tipo: Ambiente | 5 Comentarios</span>
+                </div>
+                <div class="denuncia-item">
+                    <h4>Desaparecido en Zona Centro (25 Nov)</h4>
+                    <p>Cualquier información sobre su paradero, contactar al equipo inmediatamente.</p>
+                    <span class="denuncia-meta">Tipo: Desaparecido | 12 Comentarios</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="about-section" class="info-section bg-white">
+        <div class="container">
+            <h2>Acerca de Nuestro Proyecto</h2>
+            <p><strong>App Mapas Sociales</strong> es una iniciativa **sin fines de lucro** impulsada por voluntarios dedicados a la transparencia y la seguridad ciudadana. Nuestro objetivo es crear una herramienta de mapeo accesible para que cualquier persona pueda reportar incidentes sociales y ambientales críticos de forma segura, anónima y geolocalizada.</p>
+            <p>Creemos que la información verificada es la primera línea de defensa para la comunidad.</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 App Mapas Sociales. Plataforma de Impacto Social.</p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script> 
+</body>
+</html>
